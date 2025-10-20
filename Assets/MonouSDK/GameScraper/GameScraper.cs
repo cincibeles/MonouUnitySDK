@@ -63,7 +63,7 @@ namespace Monou
             }
         }
 
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
 
         // Import the JavaScript functions
         [DllImport("__Internal")]

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Monou GG SDK tester</title>
+</head>
+<body style="text-align:center;">
+	<h1>Monou GG SDK tester</h1>
+	<table align="center">
+		<tr><td>
+			<iframe width="640" height="480" src="game/index.html" scrolling="no" ></iframe>
+			<div id="ad" style="position:absolute; width:80vw; height:80vh; left:50vw; top:50vh; transform:translate(-50%,-50%); background:yellow; display:none;">
+				<h1>External content</h1>
+				<button onclick="isAllowed = true; adIsOpen = false;">
+					Continue
+				</button>
+				<button onclick="isAllowed = false; adIsOpen = false;">
+					Cancel
+				</button>
+			</div>
+		</td><td>
+			<div style="width:200px; height:480px; background:#eee; text-align:left;overflow-y:scroll;" id="code"></div>
+		</td></tr>
+	</table>
+
+	<script>
+	window.isAllowed = false;
+	window.adIsOpen = false;
+	const iframe = document.getElementsByTagName("iframe")[0];
+	window.addEventListener('message', function(event) {
+		//if (event.origin !== 'https://monou.gg/') return;
+		var gameKey;
+		const send = (d)=> iframe.contentWindow.postMessage({ data:JSON.stringify(d), hash:"test" });
+   		const data = JSON.parse(event.data.data);
+		var code = document.createElement("div");
+		code.textContent = `* Cmd ${data.type} reibed${data.val && (" width value " + data.val) || ""}`;
+		document.getElementById("code").appendChild(code);
+   		switch(data.type){
+   			case "init":
+   				if(!!gameKey) return; gameKey = data.key;
+   				break;
+   			case "ad": case "adReward": case "sell":
+				window.adIsOpen = true;
+				document.getElementById("ad").style.display = "block";
+				const i = setInterval(()=>{
+					if(window.adIsOpen) return;
+					clearInterval(i);
+					document.getElementById("ad").style.display = "none";
+					send({success: isAllowed});
+				}, 100);
+   				break;
+   		}
+   	});
+	</script>
+
+</body>
+</html>

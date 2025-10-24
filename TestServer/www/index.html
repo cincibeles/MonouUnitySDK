@@ -32,7 +32,8 @@
 		//if (event.origin !== 'https://monou.gg/') return;
 		var gameKey;
 		const send = (d)=> iframe.contentWindow.postMessage({ data:JSON.stringify(d), hash:"test" });
-   		const data = JSON.parse(event.data.data);
+		const eventData = JSON.parse(event.data);
+   		const data = JSON.parse(eventData.data);
 		var code = document.createElement("div");
 		code.textContent = `* Cmd ${data.type} reibed${data.val && (" width value " + data.val) || ""}`;
 		document.getElementById("code").appendChild(code);

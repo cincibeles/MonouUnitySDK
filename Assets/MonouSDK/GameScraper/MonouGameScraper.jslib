@@ -17,7 +17,7 @@ var MonouGameScraperLib = {
 			var dataJSON = JSON.stringify(data);
 			var message = {hash:await generateSignature(gameKey, dataJSON), data:dataJSON};
 			window.parent.postMessage(
-				message,
+				JSON.stringify(message),
 				//"https://monou.gg/"
 			);
 		}

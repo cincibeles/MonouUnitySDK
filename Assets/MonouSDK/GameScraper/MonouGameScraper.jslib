@@ -26,9 +26,9 @@ var MonouGameScraperLib = {
 		SharedData.gameKey = UTF8ToString(kPointer);
 		SharedData.send(SharedData.gameKey, "init", false, SharedData.generateSignature);
 		window.addEventListener('message', async function(event) {
-			var data = JSON.parse(event.data?.data || '');
-			if(event.data?.hash == "test"){ SharedData.waiting = data; SharedData.secure=false; return; }
-			if(event.data?.hash != await SharedData.generateSignature(SharedData.gameKey, event.data?.data)) return;
+			var data = JSON.parse(event.data.data || '');
+			if(event.data.hash == "test"){ SharedData.waiting = data; SharedData.secure=false; return; }
+			if(event.data.hash != await SharedData.generateSignature(SharedData.gameKey, event.data.data)) return;
 			switch(data.type){ case "ad": case "adReward": case "sell": SharedData.waiting = data; SharedData.secure=true; break; }
 		});
 	},
